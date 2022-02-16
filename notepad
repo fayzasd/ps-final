@@ -1,0 +1,47 @@
+int count_input(char **input)
+{
+  int count;
+  int i;
+  int j;
+
+  count = 0;
+  i = 1;
+  j = 0;
+  
+  while (input[i])
+  {
+    j = 0;
+    while (input[i][j])
+    {
+      count++;
+      j++;
+    }
+    i++;
+  }
+  return (count);
+}
+
+void input_to_stack(char **input, int *stack_a)
+{
+  // int *stack_a;
+  int i;
+  int j;
+  int k;
+
+  i = 0;
+  j = 1;
+  k = 0;
+  // stack_a = (int *)malloc(count_input(input)*sizeof(int));
+  while (input[j])
+  {
+    k = 0;
+    while (input[j][k])
+    {
+      stack_a[i] = input[j][k] - '0';
+      k++;
+      i++;      
+    }
+    j++;
+  }
+  // return stack_a;
+}
