@@ -88,3 +88,23 @@ void rra_rrb(int *stack, int count)
   }
   stack[0] = last;
 }
+
+void rb(int *stack, int count)
+{
+  int i;
+
+  i = stack[0];
+  pull(stack, count);
+  stack[count-1] = i;
+  printf("rb\n");
+}
+
+void rrb(int *stack, int count)
+{
+  int i;
+
+  i = stack[count - 1];
+  push(stack, count);
+  stack[0] = i;
+  printf("rrb\n");
+}
