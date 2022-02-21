@@ -2,6 +2,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+typedef struct count_ab {
+  int a;
+  int b;
+  int total;
+}counter;
+
 int	ft_isdigit(int val)
 {
 	if ('0' <= val && val <= '9')
@@ -51,19 +57,23 @@ int count_input(char **input)
   return (count);
 }
 
-void input_to_stack(char **input, int *stack_a)
+int input_to_stack(char **input, int *stack_a)
 {
   int i;
   int j;
+  int stack_no;
 
+  stack_no = 0;
   i = 0;
   j = 1;
   while (input[j])
   {
     stack_a[i] = ft_atoi(input[j]);
     j++;
-    i++;      
+    i++;
+    stack_no++;
   }
+  return stack_no;
 }
 
 void init_stack(int *stack, int count)
@@ -149,60 +159,50 @@ void push(int *stack, int count)
   stack[0] = 0;
 }
 
-void pa(int *stack_a, int *stack_b, int count)
+void pa(int *stack_a, int *stack_b, counter *stacker)
 {
-  if (count != 0)
+  if (stacker->b != 0)
   {
-    push(stack_a, count);
+    stacker->a++;
+    push(stack_a, stacker->a);
     stack_a[0] = stack_b[0];
-    pull(stack_b, count);
-    printf("pb\n");;
-  }
-}
-
-void pb(int *stack_a, int *stack_b, int count)
-{ 
-  if (count != 0)
-  {
-    push(stack_b, count);
-    stack_b[0] = stack_a[0];
-    pull(stack_a, count);
+    pull(stack_b, stacker->b);
     printf("pb\n");
+    stacker->b--;
   }
 }
 
-void ra_rb(int *stack, int count)
-{
-  int first;
-  int last;
-  int i;
-  int j;
-
-  i = 0;
-  j = 1;
-  last = count - 1;
-  first = stack[0];
-  while (count > 0)
+void pb(int *stack_a, int *stack_b, counter *stacker)
+{ 
+  if (stacker->a != 0)
   {
-    stack[i] = stack[j];
-    i++;
-    j++;
-    count--;
+    stacker->b++;
+    push(stack_b, stacker->b);
+    stack_b[0] = stack_a[0];
+    pull(stack_a, stacker->a);
+    printf("pb\n");
+    stacker->a--;
   }
-  stack[last] = first;
 }
 
 void ra(int *stack, int count)
 {
+  int i;
+
+  i = stack[0];
   pull(stack, count);
-  
+  stack[count-1] = i;
   printf("ra\n");
 }
 
 void rb(int *stack, int count)
 {
-  push(stack, count);
-  printf("ra\n");
+  int i;
+
+  i = stack[0];
+  pull(stack, count);
+  stack[count-1] = i;
+  printf("rb\n");
 }
 
 void rr(int *stack_a, int *stack_b, int count)
@@ -210,6 +210,26 @@ void rr(int *stack_a, int *stack_b, int count)
   ra(stack_a, count);
   rb(stack_b, count);
   printf("rr\n");
+}
+
+void rra(int *stack, int count)
+{
+  int i;
+
+  i = stack[count - 1];
+  push(stack, count);
+  stack[0] = i;
+  printf("rra\n");
+}
+
+void rrb(int *stack, int count)
+{
+  int i;
+
+  i = stack[count - 1];
+  push(stack, count);
+  stack[0] = i;
+  printf("rrb\n");
 }
 
 void rra_rrb(int *stack, int count)
@@ -264,15 +284,23 @@ void main(int argc, char **argv)
 {
   int stack_a[count_input(argv)];
   int stack_b[count_input(argv)];
-  int count;
+  counter stacker;
 
-  count = count_input(argv);
-  input_to_stack(argv, stack_a);
-  init_stack(stack_b, count);
+  stacker.total = count_input(argv);
+  stacker.a = input_to_stack(argv, stack_a);
+  init_stack(stack_b, stacker.a);
+  stacker.b = 0;
   // sort_stack(stack_a, count);
-  ra(stack_a, count);
+  // ra(stack_a, stacker.a);
+  // rra(stack_a, stacker.a);
+  // pb(stack_a, stack_b, &stacker);
+  // pb(stack_a, stack_b, &stacker);
+  // pb(stack_a, stack_b, &stacker);
+  // rrb(stack_b, stacker.b);
+  // rb(stack_b, stacker.b);
+  // pa(stack_a, stack_b, &stacker);
   printf("\nstack_a:\n");
-  print_stack(stack_a, count);
+  print_stack(stack_a, stacker.total);
   printf("stack_b:\n");
-  print_stack(stack_b, count); 
+  print_stack(stack_b, stacker.total); 
 } 
