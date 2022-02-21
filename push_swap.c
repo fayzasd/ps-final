@@ -81,71 +81,93 @@ void print_stack(int *stack, int count)
   int i;
 
   i = 0;
-  while(count > 0)
+  while( i < count)
   {
     printf("%d\n",stack[i]);
     i++;
-    count--;
   }
   printf("\n");
 }
 
-void swap(int *stack, int pri, int sec)
+void swap(int *arr, int x, int y)
 {
   int temp;
 
-  temp = 0;
-  temp = stack[pri];
-  stack[pri] = stack[sec];
-  stack[sec] = temp;
+  temp = arr[x];
+  arr[x] = arr[y];
+  arr[y] = temp;
 }
 
-int check_s(int *stack, int count)
+void sa(int *stack, int count)
 {
-  int len;
-
-  len = 0;
-  while (count > 0)
+  if (count > 1)
   {
-    len++;
-    *stack++;
-    count--;
-  }
-  if (len == 0)
-    return 0;
-  else if (len == 1)
-    return 1;
-  return 2;
-}
-
-void sa_sb(int *stack, int count)
-{
-  int temp;
-
-  temp = 0;
-  if(check_s(stack, count) == 2)
-  {
-    temp = stack[0];
-    stack[0] = stack[1];
-    stack[1] = temp;
+    swap(stack, 0 , 1);
+    printf("sa\n"); 
   }
 }
 
-void pa_pb(int *stack_1, int *stack_2, int count)
+void sb(int *stack, int count)
+{
+  if (count > 1)
+  {
+  swap(stack, 0 , 1);
+  printf("sb\n"); 
+  }
+}
+
+void ss(int *stack_a, int *stack_b, int count)
+{
+  sa(stack_a, count);
+  sb(stack_b, count);
+}
+
+void pull(int *stack, int count)
 {
   int i;
 
   i = 0;
-  if (check_s(stack_1, count) != 0)
+  while(i < count)
   {
-    stack_2[0] = stack_1[0];
-    while(count > 0)
-    {
-      stack_1[i] = stack_1[i+1];
-      i++;
-      count--;
-    }
-    stack_1[i - 1] = 0;
+    stack[i] = stack[i+1];
+    i++;
+  }
+  stack[i - 1] = 0;
+}
+
+void push(int *stack, int count)
+{
+  int i;
+  
+  i = 0;
+  count--;
+  while (count >= 0)
+  {
+    stack[count] = stack[count - 1];
+    count--;
+  }
+  stack[0] = 0;
+}
+
+void pa(int *stack_a, int *stack_b, int count)
+{
+  if (count != 0)
+  {
+    push(stack_a, count);
+    stack_a[0] = stack_b[0];
+    pull(stack_b, count);
+    printf("pb\n");;
+  }
+}
+
+void pb(int *stack_a, int *stack_b, int count)
+{ 
+  if (count != 0)
+  {
+    push(stack_b, count);
+    stack_b[0] = stack_a[0];
+    pull(stack_a, count);
+    printf("pb\n");
   }
 }
 
@@ -168,6 +190,18 @@ void ra_rb(int *stack, int count)
     count--;
   }
   stack[last] = first;
+}
+
+void rotate()
+{
+
+}
+
+void ra(int *stack)
+{
+  int first;
+  
+
 }
 
 void rra_rrb(int *stack, int count)
@@ -228,10 +262,11 @@ void main(int argc, char **argv)
   input_to_stack(argv, stack_a);
   init_stack(stack_b, count);
   // sort_stack(stack_a, count);
-  // sa_sb(stack_a, count);
-  pa_pb(stack_a, stack_b, count);
-  printf("stack_a:\n");
+  sa(stack_a, count);
+  pb(stack_a,stack_b, count);
+  pa(stack_a, stack_b, count);
+  printf("\nstack_a:\n");
   print_stack(stack_a, count);
   printf("stack_b:\n");
   print_stack(stack_b, count); 
-}
+} 
