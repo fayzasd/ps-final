@@ -192,16 +192,24 @@ void ra_rb(int *stack, int count)
   stack[last] = first;
 }
 
-void rotate()
+void ra(int *stack, int count)
 {
-
+  pull(stack, count);
+  
+  printf("ra\n");
 }
 
-void ra(int *stack)
+void rb(int *stack, int count)
 {
-  int first;
-  
+  push(stack, count);
+  printf("ra\n");
+}
 
+void rr(int *stack_a, int *stack_b, int count)
+{
+  ra(stack_a, count);
+  rb(stack_b, count);
+  printf("rr\n");
 }
 
 void rra_rrb(int *stack, int count)
@@ -262,9 +270,7 @@ void main(int argc, char **argv)
   input_to_stack(argv, stack_a);
   init_stack(stack_b, count);
   // sort_stack(stack_a, count);
-  sa(stack_a, count);
-  pb(stack_a,stack_b, count);
-  pa(stack_a, stack_b, count);
+  ra(stack_a, count);
   printf("\nstack_a:\n");
   print_stack(stack_a, count);
   printf("stack_b:\n");
