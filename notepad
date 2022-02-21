@@ -45,3 +45,46 @@ void input_to_stack(char **input, int *stack_a)
   }
   // return stack_a;
 }
+
+
+void ra_rb(int *stack, int count)
+{
+  int first;
+  int last;
+  int i;
+  int j;
+
+  i = 0;
+  j = 1;
+  last = count - 1;
+  first = stack[0];
+  while (count > 0)
+  {
+    stack[i] = stack[j];
+    i++;
+    j++;
+    count--;
+  }
+  stack[last] = first;
+}
+
+void rra_rrb(int *stack, int count)
+{
+  int i;
+  int j;
+  int last;
+  int count_1;
+
+  i = 0;
+  j = count - 2;
+  last = stack[count - 1];
+  count_1 = count - 1;
+  while(count > 0)
+  {
+    stack[count_1] = stack[j];
+    j--;
+    count_1--;
+    count--;
+  }
+  stack[0] = last;
+}

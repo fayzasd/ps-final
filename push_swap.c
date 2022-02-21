@@ -185,30 +185,23 @@ void pb(int *stack_a, int *stack_b, counter *stacker)
   }
 }
 
-void ra(int *stack, int count)
+void ra_rb(int *stack, int count, char flag)
 {
   int i;
 
   i = stack[0];
   pull(stack, count);
   stack[count-1] = i;
-  printf("ra\n");
+  if (flag == 'a')
+    printf("ra\n");
+  else if (flag == 'b')
+    printf("rb\n");
 }
 
-void rb(int *stack, int count)
+void rr(int *stack_a, int *stack_b, counter *stacker)
 {
-  int i;
-
-  i = stack[0];
-  pull(stack, count);
-  stack[count-1] = i;
-  printf("rb\n");
-}
-
-void rr(int *stack_a, int *stack_b, int count)
-{
-  ra(stack_a, count);
-  rb(stack_b, count);
+  ra_rb(stack_a, stacker->a, 0);
+  ra_rb(stack_b, stacker->b, 0);
   printf("rr\n");
 }
 
@@ -230,27 +223,6 @@ void rrb(int *stack, int count)
   push(stack, count);
   stack[0] = i;
   printf("rrb\n");
-}
-
-void rra_rrb(int *stack, int count)
-{
-  int i;
-  int j;
-  int last;
-  int count_1;
-
-  i = 0;
-  j = count - 2;
-  last = stack[count - 1];
-  count_1 = count - 1;
-  while(count > 0)
-  {
-    stack[count_1] = stack[j];
-    j--;
-    count_1--;
-    count--;
-  }
-  stack[0] = last;
 }
 
 void sort_stack(int *stack_a, int count)
@@ -291,13 +263,14 @@ void main(int argc, char **argv)
   init_stack(stack_b, stacker.a);
   stacker.b = 0;
   // sort_stack(stack_a, count);
-  // ra(stack_a, stacker.a);
+  // ra(stack_a, stacker.a, 1);
   // rra(stack_a, stacker.a);
-  // pb(stack_a, stack_b, &stacker);
-  // pb(stack_a, stack_b, &stacker);
-  // pb(stack_a, stack_b, &stacker);
+  pb(stack_a, stack_b, &stacker);
+  pb(stack_a, stack_b, &stacker);
+  pb(stack_a, stack_b, &stacker);
   // rrb(stack_b, stacker.b);
   // rb(stack_b, stacker.b);
+  rr(stack_a, stack_b, &stacker);
   // pa(stack_a, stack_b, &stacker);
   printf("\nstack_a:\n");
   print_stack(stack_a, stacker.total);
