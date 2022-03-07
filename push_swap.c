@@ -8,7 +8,7 @@ int	ft_isdigit(int val)
 		return (0);
 }
 
-int	ft_atoi(const char *str)
+int	ft_atoi(char *str)
 {
 	unsigned int	n;
 	int				flag;
@@ -34,7 +34,7 @@ int	ft_atoi(const char *str)
 	return ((int)n);
 }
 
-int check_dup(int *stack, int count)
+int check_input(int *stack, int count)
 {
   int i;
   int j;
@@ -54,103 +54,112 @@ int check_dup(int *stack, int count)
     }
     i++;
   }
-  ft_printf("no:%d\ncount:%d\n",no,count);
+  // ft_printf("no:%d\ncount:%d\n",no,count);
   if (no > count)
     return 1;
   return 0;
-}
-
-int count_multiple(char **input)
-{
-  int i;
-  int j;
-  int count;
-
-  i = 0;
-  j = 1;
-  count = 0;
-  while (input[i])
-  {
-    j = 1;
-    while (input[i][j])
-    {
-      if (input[i][j] == ' ' && ft_isdigit(input[i][j+1]))
-       count++;
-      j++;      
-    }
-    i++;
-  }
-  return (count);
 }
 
 int count_input(char **input)
 {
   int count;
   int i;
+  int j;
 
   count = 0;
   i = 1;
+  j = 0;
   while (input[i])
   {
-    count++;
+    j = 0;
+    while (input[i][j])
+    {
+      if (input[i][j] != ' ' && !(ft_isdigit(input[i][j+1])))  
+        count++;
+      j++;
+    }
     i++;
   }
   return (count);
 }
 
-void input_to_stack(char **input, int *stack_a)
+int count_arg(char **input)
+{
+  int count;
+  int i;
+  int j;
+
+  count = 0;
+  i = 1;
+  j = 0;
+  while (input[i])
+  {
+    j = 0;
+    while (input[i][j])
+    {
+      count++;
+      j++;
+    }
+    i++;
+  }
+  return count;
+}
+
+char *join_input(char **input)
+{
+  int i;
+  int j;
+  int k;
+  char *output;
+
+  i = 1;
+  j = 0;
+  k = 0;
+  output = (char *)malloc(count_arg(input)*sizeof(char));
+  while (input[i])
+  {
+    j= 0;
+    output[k++] = ' ';
+    while (input[i][j])
+    {
+      if(input[i][j] != ' ')
+        output[k++] = input[i][j];
+      else
+        output[k++] = ' ';
+      j++;
+    }
+    i++; 
+  }
+  output[k] = '\0';
+  return (output);
+}
+
+void input_to_stack(char *input, int *stack_a)
 {
   int i;
   int j;
 
   i = 0;
-  j = 1;
+  j = 0;
   while (input[j])
   {
-    stack_a[i] = ft_atoi(input[j]);
-    j++;
-    i++;
-  }
-}
-
-void input_multi(char **input, int *stack, int total)
-{
-  int i;
-  int j;
-  int k;
-
-  i = 1;
-  j = 0;
-  k = 0;
-  while (input[i] && i < (total - 1))
-  {
-    j = 0;
-    while (input[i][j])
+    if (ft_isdigit(input[j]))
     {
-      if (ft_isdigit(input[i][j]))
-        {
-          stack[k] = (input[i][j] - '0');
-          if (ft_isdigit(input[i][j+1]))
-            stack[k] *= 10;
-          j++;
-          while(ft_isdigit(input[i][j]) && input[i][j])
-          {
-            stack[k] += (input[i][j] - '0');
-            if (ft_isdigit(input[i][j+1]) && input[i][j+1])
-              stack[k] *= 10;
-            j++;
-          }
-        }
-      k++;
-      j++;        
-    }
+      stack_a[i] = input[j] - '0';
+      if (ft_isdigit(input[j+1]))
+            stack_a[i] *= 10;
+      j++;
+      while(ft_isdigit(input[j]) && input[j])
+      {
+        stack_a[i] += (input[j] - '0');
+        if (ft_isdigit(input[j+1]) && input[j+1])
+          stack_a[i] *= 10;
+        j++;
+      }
     i++;
+    }
+    j++;
   }
-}
-
-void input_2(char **input, int *stack, int total)
-{
-  
 }
 
 void init_stack(int *stack, int count)
@@ -201,56 +210,63 @@ void find_least(int *stack, counter *stacker, first *least)
   }
 }
 
-void sort_stack(int *stack_a, int *stack_b, counter *stacker, first *least)
+void sort_stack_1(int *stack_a, int *stack_b, counter *stacker, first *least)
 {
+  int i;
   int j;
 
   j = 0;
+  i = 0;
   find_least(stack_a, stacker, least);
   if (least->pos == 0)
     pb(stack_a, stack_b, stacker);
   else if (least->pos == (stacker->total - 1))
-    rra(stack_a, stacker->a);
+    rra(stack_a, stacker->a, stacker);
   else
   {
-    if ((least->pos) > ((stacker->total)/2))
-      rra(stack_a, stacker->a);
+    if ((least->pos) > ((stacker->a)/2))
+      rra(stack_a, stacker->a, stacker);
     else
-      ra(stack_a, stacker->a);
+      ra(stack_a, stacker->a, stacker);
   }
   if (stacker->a > 0)
-    sort_stack(stack_a, stack_b, stacker, least);
+    sort_stack_1(stack_a, stack_b, stacker, least);
+  else
+    {
+      while(i < stacker->total)
+      {
+        pa(stack_a, stack_b, stacker);
+        i++;
+      }
+    }
 }
+
+// void sort_stack_1
 
 int main(int argc, char **argv)
 {
-  int stack_a[count_input(argv)+count_multiple(argv)];
-  int stack_b[count_input(argv)+count_multiple(argv)];
+  int stack_a[count_input(argv)];
+  int stack_b[count_input(argv)];
   counter stacker;
   first least;
-  int i = 0;
  
-  stacker.total = count_multiple(argv) + count_input(argv);
+  stacker.total = count_input(argv);
   stacker.a = stacker.total;
-  ft_printf("total:%d multi:%d + input:%d\n",stacker.total,count_multiple(argv), count_input(argv));
-  // input_to_stack(argv, stack_a);
-  input_multi(argv, stack_a, stacker.total);
-  ft_printf("total:%d multi:%d + input:%d\n",stacker.total,count_multiple(argv), count_input(argv));
-  if (check_dup(stack_a, stacker.total) == 1)
+  // ft_printf("total:%d + count_input:%d + count_arg:%d\n",stacker.total, count_input(argv), count_arg(argv));
+  input_to_stack(join_input(argv), stack_a);
+  // ft_printf("string is%s\n",join_input(argv));
+  if (check_input(stack_a, stacker.total) == 1)
     write(2,"Error\n",6);
   else
   {
     init_stack(stack_b, stacker.a);
     stacker.b = 0; 
-    sort_stack(stack_a, stack_b, &stacker, &least);
-    while(i < stacker.total)
-    {
-      pa(stack_a, stack_b, &stacker);
-      i++;
-    }
+    sort_stack_1(stack_a, stack_b, &stacker, &least);
     ft_printf("\nstack_a:\n");
-    print_stack(stack_a, stacker.total);
-    ft_printf("stack_b:\n");
-    print_stack(stack_b, stacker.total); 
+    print_stack(stack_a, stacker.a);
+    ft_printf("instrctions:%d\n",stacker.icount);
+  
+    // ft_printf("stack_b:\n");
+    // print_stack(stack_b, stacker.b); 
   }
 } 

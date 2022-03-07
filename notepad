@@ -135,3 +135,62 @@ void rrr(int *stack_a, int *stack_b, counter *stacker)
   rra_rrb(stack_b, stacker->b, 0);
   ft_printf("rrr\n");
 }
+
+void input_multi(char **input, int *stack, int total)
+{
+  int i;
+  int j;
+  int k;
+
+  i = 1;
+  j = 0;
+  k = 0;
+  while (input[i] && i < (total - 1))
+  {
+    j = 0;
+    while (input[i][j])
+    {
+      if (ft_isdigit(input[i][j]))
+        {
+          stack[k] = (input[i][j] - '0');
+          if (ft_isdigit(input[i][j+1]))
+            stack[k] *= 10;
+          j++;
+          while(ft_isdigit(input[i][j]) && input[i][j])
+          {
+            stack[k] += (input[i][j] - '0');
+            if (ft_isdigit(input[i][j+1]) && input[i][j+1])
+              stack[k] *= 10;
+            j++;
+          }
+        }
+      k++;
+      j++;        
+    }
+    i++;
+  }
+}
+
+
+int count_multiple(char **input)
+{
+  int i;
+  int j;
+  int count;
+
+  i = 0;
+  j = 1;
+  count = 0;
+  while (input[i])
+  {
+    j = 1;
+    while (input[i][j])
+    {
+      if (input[i][j] == ' ' && ft_isdigit(input[i][j+1]))
+       count++;
+      j++;      
+    }
+    i++;
+  }
+  return (count);
+}
