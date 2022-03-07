@@ -108,3 +108,30 @@ void rrb(int *stack, int count)
   stack[0] = i;
   printf("rrb\n");
 }
+
+void rr(int *stack_a, int *stack_b, counter *stacker)
+{
+  ra_rb(stack_a, stacker->a, 0);
+  ra_rb(stack_b, stacker->b, 0);
+  printf("rr\n");
+}
+
+void rra_rrb(int *stack, int count, char flag)
+{
+  int i;
+
+  i = stack[count - 1];
+  push(stack, count);
+  stack[0] = i;
+  if (flag == 'a')
+    ft_printf("rra\n");
+  else if (flag == 'b')
+    ft_printf("rrb\n");  
+}
+
+void rrr(int *stack_a, int *stack_b, counter *stacker)
+{
+  rra_rrb(stack_a, stacker->a, 0);
+  rra_rrb(stack_b, stacker->b, 0);
+  ft_printf("rrr\n");
+}
