@@ -113,13 +113,11 @@ char *join_input(char **input)
   char *output;
 
   i = 1;
-  j = 0;
   k = 0;
   output = (char *)malloc(count_arg(input)*sizeof(char));
   while (input[i])
   {
-    j= 0;
-    output[k++] = ' ';
+    j = 0;
     while (input[i][j])
     {
       if(input[i][j] != ' ')
@@ -128,6 +126,7 @@ char *join_input(char **input)
         output[k++] = ' ';
       j++;
     }
+    output[k++] = ' ';
     i++; 
   }
   output[k] = '\0';
@@ -160,6 +159,7 @@ void input_to_stack(char *input, int *stack_a)
     }
     j++;
   }
+  free(input);
 }
 
 void init_stack(int *stack, int count)
@@ -241,7 +241,43 @@ void sort_stack_1(int *stack_a, int *stack_b, counter *stacker, first *least)
     }
 }
 
-// void sort_stack_1
+int sort_check(int *stack, int count)
+{
+  int i;
+  int j;
+
+  j = 0;
+  i = 0;
+  while (i < count)
+  {
+    j = i + 1;
+    while (j < count)
+    {
+      if (stack[i] > stack[j])
+        return 1;
+      j++;
+    }
+    i++;
+  }
+  return 0;
+}
+
+
+void sort_stack_2(int *stack_a, int *stack_b, counter *stacker)
+{
+  int i;
+  int j;
+
+  i = 0;
+  j = 0;
+  if (stack_a[0] > stack_a[1])
+    sa(stack_a, stacker->a, stacker);
+  else if (sort_check(stack_a, stacker->a) == 1)
+  {
+    pb(stack_a, stack_b, stacker);
+    pb(stack_a, stack_b, stacker);
+  }
+}
 
 int main(int argc, char **argv)
 {
@@ -252,6 +288,7 @@ int main(int argc, char **argv)
  
   stacker.total = count_input(argv);
   stacker.a = stacker.total;
+  stacker.icount = 0;
   // ft_printf("total:%d + count_input:%d + count_arg:%d\n",stacker.total, count_input(argv), count_arg(argv));
   input_to_stack(join_input(argv), stack_a);
   // ft_printf("string is%s\n",join_input(argv));
