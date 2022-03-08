@@ -1,32 +1,6 @@
 #include "push_swap.h"
 
-int check_dup(int *stack, int count)
-{
-  int i;
-  int j;
-  int no;
-
-  i = 0;
-  j = 0;
-  no = 0;
-  while (i < count)
-  {
-    j = 0;
-    while(j < count)
-    {
-      if (stack[i] == stack[j])
-        no++;
-      j++;
-    }
-    i++;
-  }
-  if (no > count)
-    return 1;
-    ft_printf("%d\n",no);
-  return 0;
-}
-
-int check_input (char **input, int *stack, counter *stacker)
+int check_input (char **input, int *stack)
 {
   int i;
   int j;
@@ -44,8 +18,6 @@ int check_input (char **input, int *stack, counter *stacker)
     }
     i++;
   }
-  if (check_dup(stack, stacker->a) == 1)
-    return 1;
   return 0;
 }
 

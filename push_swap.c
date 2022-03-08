@@ -129,18 +129,23 @@ int main(int argc, char **argv)
   stacker.total = count_input(argv);
   stacker.a = stacker.total;
   stacker.icount = 0;
-  if (check_input(argv, stack_a, &stacker) == 1)
+  if (check_input(argv, stack_a) == 1)
     write(2,"Error\n",6);
   else
   {
     input_to_stack(join_input(argv), stack_a);
-    init_stack(stack_b, stacker.a);
-    stacker.b = 0; 
-    sort_stack_1(stack_a, stack_b, &stacker, &least);
-    ft_printf("\nstack_a:\n");
-    print_stack(stack_a, stacker.a);
-    ft_printf("stack_b:\n");
-    print_stack(stack_b, stacker.b); 
-    ft_printf("instrctions:%d\n",stacker.icount);
+    if (check_dup(stack_a, stacker.a) == 1)
+      write(2,"Error\n",6);
+    else
+    {
+      init_stack(stack_b, stacker.a);
+      stacker.b = 0; 
+      sort_stack_1(stack_a, stack_b, &stacker, &least);
+      ft_printf("\nstack_a:\n");
+      print_stack(stack_a, stacker.a);
+      ft_printf("stack_b:\n");
+      print_stack(stack_b, stacker.b); 
+      ft_printf("instrctions:%d\n",stacker.icount);
+    }
   }
 } 

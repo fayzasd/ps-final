@@ -56,3 +56,28 @@ void print_stack(int *stack, int count)
   }
   ft_printf("\n");
 }
+
+int check_dup(int *stack, int count)
+{
+  int i;
+  int j;
+  int no;
+
+  i = 0;
+  j = 0;
+  no = 0;
+  while (i < count)
+  {
+    j = 0;
+    while(j < count)
+    {
+      if (stack[i] == stack[j])
+        no++;
+      j++;
+    }
+    i++;
+  }	
+  if (no > count)
+    return 1;
+  return 0;
+}

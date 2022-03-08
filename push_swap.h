@@ -26,10 +26,10 @@ int	ft_isdigit(int val);
 int	ft_atoi(char *str);
 void init_stack(int *stack, int count);
 void print_stack(int *stack, int count);
+int check_dup(int *stack, int count);
 
 // ps_input
-int check_dup(int *stack, int count);
-int check_input (char **input, int *stack, counter *stacker);
+int check_input (char **input, int *stack);
 int count_arg(char **input);
 int count_input(char **input);
 char *join_input(char **input);
