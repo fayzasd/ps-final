@@ -20,6 +20,22 @@ typedef struct lesser {
   int pos;
 } first;
 
+//ps_assist
+
+int	ft_isdigit(int val);
+int	ft_atoi(char *str);
+void init_stack(int *stack, int count);
+void print_stack(int *stack, int count);
+
+// ps_input
+int check_dup(int *stack, int count);
+int check_input (char **input, int *stack, counter *stacker);
+int count_arg(char **input);
+int count_input(char **input);
+char *join_input(char **input);
+void input_to_stack(char *input, int *stack_a);
+
+//ps_instructions
 void swap(int *arr, int x, int y);
 void sa(int *stack, int count, counter *stacker);
 void sb(int *stack, int count, counter *stacker);

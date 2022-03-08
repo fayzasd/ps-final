@@ -2,6 +2,8 @@ NAME		= push_swap
 
 SRCS		= push_swap.c \
 					ps_instrucs.c \
+					ps_assist.c \
+					ps_input.c \
 					ft_printf/ft_printf.c \
 					ft_printf/ft_printf_assist.c \
 					ft_printf/ft_printf_utils.c \
